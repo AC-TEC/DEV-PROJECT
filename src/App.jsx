@@ -104,6 +104,12 @@ function App() {
   useEffect(() => {
     const authUnsub = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+
+      //clear count when user signs out
+      if(!currentUser){
+        setCount(0);
+      }
+
     });
     return () => authUnsub();
   }, []);
@@ -165,15 +171,17 @@ function App() {
 
 
     <div className="card">
-      {user ? ( <button onClick={handle_signOut}>Sign Out</button> ) : ( <button onClick={handle_signIn}>Sign In</button>) }
+      {/*update: Changed so that count and reset buttons appear only when signed in  */}
 
-      <button onClick={handle_buttonClick}>
-        Count: {count}
-      </button>
-
-      <button onClick={handle_resetClick}>
-        Reset Count
-      </button>
+      {user ? (
+        <>
+          <button onClick={handle_signOut}>Sign Out</button>
+          <button onClick={handle_buttonClick}>Count: {count}</button>
+          <button onClick={handle_resetClick}>Reset Count</button>
+        </>
+      ) : (
+          <button onClick={handle_signIn}>Sign In</button>
+      )}
     </div>
       
       
